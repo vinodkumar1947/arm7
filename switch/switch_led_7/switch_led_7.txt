@@ -1,0 +1,57 @@
+/******************************************************
+IDE :- Keil
+DEVELOPED BY:- embford.com
+WHAT PROGRAM DO:- PROGRAM OF TWO SWITCH,ONE CONTROL LED BLINKING AND 
+OTHER CONTROL 7 SEGMENT CONNECTED WITH ARM7(LPC21XX)
+******************************************************/
+
+#include<lpc21xx.h>
+
+#define switch_1 (IO0PIN&(1<<0))
+#define switch_2 (IO0PIN&(1<<1))
+#define led (0xff<<2)
+
+void delay();
+
+int data1[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90 }; // array data
+
+int main()
+  {
+        int i=0;
+        PINSEL0=0X0000000;
+        IO0DIR=0XFFFFFFFD;
+        while(1)
+          {
+                if(switch_1==1)
+                  {
+                         IO0SET=led;
+                         delay();
+                         delay();
+                         IO0CLR=led;
+                         delay();
+                  }
+                if(switch_2==0)
+                  {
+                      if(i==10)
+                          i=0;
+                      IO0SET=(data1[i]<<12);
+                      delay();
+                      delay();
+                      delay();
+                      delay();
+                      delay();
+                      delay();
+                      delay();
+                      delay();
+                      IO0CLR=(data1[i]<<12);
+                      i++;                            
+                }
+          }
+   }
+
+void delay()
+   {
+      int i,j;
+      for(i=0;i<100;i++)
+         for(j=0;j<600;j++);
+   }
